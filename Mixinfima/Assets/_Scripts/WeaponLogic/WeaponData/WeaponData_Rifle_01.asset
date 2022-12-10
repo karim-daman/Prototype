@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06afc826d75bf14a9ec93a3d7817736, type: 3}
+  m_Name: WeaponData_Rifle_01
+  m_EditorClassIdentifier: 
+  ID: 0
+  Name: Rifle_01
+  WeaponPrefab: {fileID: 4144797137816696672, guid: a2e7caf2eb4018c4b8ce98911ceef9fa, type: 3}
+  BulletPrefab: {fileID: 115002760724254412, guid: 1c1b3a05eedbbbd4e96c81019b0a08e0, type: 3}
+  BulletShellPrefab: {fileID: 6047315765606694325, guid: 737e4e807c111704f840497af090a7c4, type: 3}
+  MagazinePrefab: {fileID: 1942633182789376513, guid: 80e9ee8b37a8b1c43b9c8288b380d82f, type: 3}
+  MagazineLocalSpawnPosition: {x: -1.753272, y: 0.2409363, z: -0.4000521}
+  MagazineLocalSpawnRotation: {x: 38.072, y: -8.088, z: 103.76}
+  MagazineLocalSpawnScale: {x: 10, y: 10, z: 10}
+  BulletVelocity: 500
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 1
+  Spread: {x: 0, y: 0, z: 0}
+  ShootMode: 0
+  MaxAmmoPerMag: 30
+  MaxAmmoCapacity: 240
+  ReloadSpeed: 5
+  KickbackForce: 0
+  ZkickBack:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: -2.591343
+      outSlope: -2.591343
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.03019749
+    - serializedVersion: 3
+      time: 0.3286917
+      value: 0.30897352
+      inSlope: -0.07137756
+      outSlope: -0.07137756
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10993098
+      outWeight: 0.10698074
+    - serializedVersion: 3
+      time: 0.68105406
+      value: 0.3002646
+      inSlope: 0.082036346
+      outSlope: 0.082036346
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09589662
+      outWeight: 0.10549605
+    - serializedVersion: 3
+      time: 1
+      value: 0.3
+      inSlope: -0.0008295607
+      outSlope: -0.0008295607
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  XrotationRecoil:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -44.225136
+      outSlope: -44.225136
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.026619956
+    - serializedVersion: 3
+      time: 0.46752566
+      value: 0.5441961
+      inSlope: -11.230256
+      outSlope: -11.230256
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.048852544
+      outWeight: 0.02839233
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.0220138
+      outSlope: -1.0220138
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boltSliderCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.07
+      value: 0
+      inSlope: -0.14035088
+      outSlope: -0.14035088
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: -0.08
+      inSlope: 0.009824559
+      outSlope: 0.009824559
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.5012585
+      outSlope: 0.5012585
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03722918
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  FireRate: 0.12
+  Stand_Idle_up: {x: -0.03, y: -0.02, z: -0.07}
+  Stand_Idle_forward: {x: -0.06, y: 0, z: 0}
+  Stand_Idle_down: {x: 0, y: -0.09, z: 0.2}
+  Stand_Aim_up: {x: -0.11, y: 0.05, z: -0.02}
+  Stand_Aim_forward: {x: -0.05, y: 0.42, z: 0.13}
+  Stand_Aim_down: {x: -0.06, y: -0.09, z: 0.27}
+  Crouch_Idle_up: {x: -0.05, y: 0, z: 0}
+  Crouch_Idle_forward: {x: -0.05, y: 0.15, z: 0.12}
+  Crouch_Idle_down: {x: -0.05, y: -0.1, z: 0.18}
+  Crouch_Aim_up: {x: -0.09, y: 0.11, z: -0.05}
+  Crouch_Aim_forward: {x: -0.07, y: 0.4, z: 0.13}
+  Crouch_Aim_down: {x: -0.05, y: -0.1, z: 0.23}
