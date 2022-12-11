@@ -44,7 +44,11 @@ public class AnimationController : MonoBehaviour
         if (forceSprint) isSprinting = true;
         else isSprinting = Input.GetKey(KeyCode.LeftShift);
 
-        if (isSprinting) SprintSway();
+        if (applySprintMotion)
+        {
+            if (isSprinting) SprintSway();
+        }
+
 
 
 
@@ -91,6 +95,7 @@ public class AnimationController : MonoBehaviour
     [SerializeField] float duration;
     [SerializeField] GameObject weaponPivot;
     [SerializeField] AnimationCurve xSway, ySway;
+    [SerializeField] bool applySprintMotion;
 
     void SprintSway()
     {

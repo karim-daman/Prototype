@@ -7,10 +7,6 @@ using RootMotion.FinalIK;
 
 public class IKController : MonoBehaviour
 {
-
-    [Header("--- Misc")]
-    #region Misc
-
     [SerializeField] bool enableIK;
     [SerializeField] Inventory inventory;
     [SerializeField] float lerpSpeed = 15;
@@ -19,71 +15,24 @@ public class IKController : MonoBehaviour
     [SerializeField] FullBodyBipedIK fbbik;
     [SerializeField] GameObject bagPack;
     [SerializeField] GameObject slot;
-
-    [SerializeField] GameObject weaponCam;
-    [SerializeField] float minPickupDistance;
-
-    // [SerializeField] List<GameObject> ragdollObjects;
-    // [SerializeField] List<Rigidbody> ragdoll_bodies;
-    // [SerializeField] List<Collider> ragdoll_Colliders;
-    // [SerializeField] FullBodyBipedIK fullBodyBipedIK;
-    // [SerializeField] GameObject weaponGrip_right;
-    // [SerializeField] GameObject weaponGrip_left;
-
-
     public bool isArmedRight;
     public bool isArmedLeft;
     float timer;
     float start;
-
-    private bool startPickUp;
-
-    float pickUpTimer;
-
-    WeaponBase pickableWeapon;
-
-    Vector3 startPickUpPos;
-    Vector3 startPickUpRot;
-
-    #endregion
-
-    [Header("--- Constraints")]
-    #region Constraints
     [SerializeField] List<GameObject> constraints_list;
     [SerializeField] AnimationController animationController;
-    [SerializeField] List<Rig> rig_list;
+    [SerializeField] public List<Rig> rig_list;
     [SerializeField] float aimLerpSpeed;
     [SerializeField] float sprintLerpSpeed;
-
-    int idle_layer = 0;
-    int aim_layer = 1;
-    int sprint_layer = 2;
-    int holster_layer = 3;
-
-    #endregion
-
-    [Header("--- Reloading")]
-    #region Reloading
-    // [SerializeField] List<Transform> reload_targets;
+    public int idle_layer = 0, aim_layer = 1, sprint_layer = 2, holster_layer = 3;
     public GameObject leftHandIK;
     public GameObject rightHandIK;
     public List<TwoBoneIKConstraint> fingerBones_left;
-    // [SerializeField] GameObject oldClip;
     [SerializeField] GameObject weaponPrefab;
-    // [SerializeField] bool emptyClip;
-    // [SerializeField] int step = -1;
-    // [SerializeField] bool isReloading = false;
-    // float lerpTime = 0;
-    #endregion
-
-    [Header("--- Posing")]
-    #region Posing
     [SerializeField] PlayerController playerController;
     public State currentState;
-
     MultiPositionConstraint idle_pos_constraint;
     MultiPositionConstraint aim_pos_constraint;
-
     public enum State
     {
         Stand_Idle,
@@ -91,22 +40,8 @@ public class IKController : MonoBehaviour
         Crouch_Idle,
         Crouch_Aim,
     }
-    #endregion 
-
-    [Header("--- Shooting")]
-    #region shooting
-
-    [SerializeField] GameObject rifleSlider;
-    [SerializeField] GameObject rifleSlot;
-    [SerializeField] GameObject rifleBoltSlider;
-    [SerializeField] GameObject bulletSpawnPoint;
-    [SerializeField] ParticleSystem shellParticles;
-    [SerializeField] GameObject bulletContainer;
-    float elapsed_time;
-    bool isShooting, hasEjectedShell, hasFired;
     float aim_flerp_elapsed, sprint_flerp_elapsed;
 
-    #endregion
 
     private void Awake()
     {
@@ -123,15 +58,9 @@ public class IKController : MonoBehaviour
         isArmedRight = isArmedLeft = false;
     }
 
-
-
     void Update()
     {
         if (!enableIK) return;
-        if (Input.GetKey(KeyCode.Tab)) Time.timeScale = .1f;
-        else Time.timeScale = 1;
-
-
 
         if (inventory.GetEquippedIndex() == -1)
         {

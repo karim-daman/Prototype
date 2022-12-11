@@ -11,69 +11,20 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] GameObject weaponCam;
     [SerializeField] float minPickupDistance;
-    [SerializeField] GameObject slot;
+    public GameObject slot;
 
     WeaponBase pickableWeapon;
-    Vector3 startPickUpPos;
-    Vector3 startPickUpRot;
-    private bool startPickUp;
+    public Vector3 startPickUpPos;
+    public Vector3 startPickUpRot;
+    public bool startPickUp;
     float pickUpTimer;
 
 
     void Update()
     {
-        PickupWeapon();
     }
 
-    private void PickupWeapon()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(weaponCam.transform.position, weaponCam.transform.TransformDirection(Vector3.forward), out hit, minPickupDistance)
-            && hit.transform.tag == "Weapon"
-            && hit.transform.gameObject.GetComponent<WeaponBase>().isAvailable)
-        {
-            Debug.DrawRay(weaponCam.transform.position, weaponCam.transform.TransformDirection(Vector3.forward) * minPickupDistance, Color.red);
 
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                pickableWeapon = hit.transform.gameObject.GetComponent<WeaponBase>();
-                Destroy(pickableWeapon.transform.gameObject.GetComponent<Rigidbody>());
-                pickableWeapon.isAvailable = false;
-                AddWeapon(pickableWeapon);
-                Destroy(pickableWeapon.rb);
-                pickableWeapon.transform.SetParent(slot.transform);
-
-                ///////TODO: preform hand reaching out and grabbing weapon handle.
-
-                // rightHandIK.transform.position = weaponGrip_right.transform.position;
-
-                startPickUp = true;
-                startPickUpPos = pickableWeapon.transform.localPosition;
-                startPickUpRot = pickableWeapon.transform.localEulerAngles;
-            }
-        }
-
-
-        if (startPickUp)
-        {
-            if (PickupTransition())
-            {
-                startPickUp = false;
-                pickUpTimer = 0;
-            }
-
-            bool PickupTransition()
-            {
-                if (pickUpTimer > 1.0f) return true;
-                pickUpTimer += Time.deltaTime;
-                // pickableWeapon.transform.localPosition = Vector3.Lerp(startPickUpPos, new Vector3(), pickUpTimer);
-                // pickableWeapon.transform.localEulerAngles = Vector3.Lerp(startPickUpRot, new Vector3(), pickUpTimer);
-                pickableWeapon.transform.localPosition = new Vector3();
-                pickableWeapon.transform.localEulerAngles = new Vector3();
-                return false;
-            }
-        }
-    }
 
     public void AddWeapon(WeaponBase pickableItem)
     {

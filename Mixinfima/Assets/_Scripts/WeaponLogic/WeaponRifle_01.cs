@@ -13,11 +13,18 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
     [SerializeField] GameObject bulletSpawnPoint;
     [SerializeField] GameObject bulletContainer;
     [SerializeField] float lerpSpeed = 15;
-    [SerializeField] int reloadStep = -1;
+    [SerializeField] public int reloadStep = -1;
     [SerializeField] IKController iKController;
     [SerializeField] List<Transform> reload_targets;
     [SerializeField] GameObject magazineClip;
     [SerializeField] Inventory inventory;
+
+
+    [SerializeField] GameObject slot;
+    [SerializeField] GameObject bagPack;
+
+    float timer;
+    float start;
 
     float lerpTime = 0;
 
@@ -52,6 +59,12 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
         }
 
         Reload();
+
+
+
+
+
+
 
     }
 
@@ -177,7 +190,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 
                     };
                     break;
-                case 5: // hand on bolt lever
+                case 5: // right hand on bolt lever
                     if (nextStep(iKController.rightHandIK, reload_targets[reloadStep]))
                     {
                         reloadStep++;
@@ -185,7 +198,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                     };
                     break;
 
-                case 6: // hand on bolt lever pull back
+                case 6: // right hand on bolt lever pull back
 
                     // rifleBoltSlider.transform.localPosition = new Vector3(rifleBoltSlider.transform.localPosition.x, rifleBoltSlider.transform.localPosition.y, rifleBoltSlider.transform.localPosition.z - .0002f);
                     rifleBoltSlider.transform.parent = iKController.rightHandIK.transform;

@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMouseDelta = Vector2.zero;
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
 
+    [SerializeField][Range(.1f, 1)] float TimeScale;
+
     public float gravityScale = 1;
     public float jumpHeight = 1;
 
@@ -44,6 +46,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetKey(KeyCode.Tab)) Time.timeScale = .1f;
+        else Time.timeScale = TimeScale;
+
         if (animationController.speedMultiplier == 1) moveSpeed = walkSpeed;
         else if (animationController.speedMultiplier == 2) moveSpeed = runSpeed;
         else moveSpeed = sprintSpeed;
