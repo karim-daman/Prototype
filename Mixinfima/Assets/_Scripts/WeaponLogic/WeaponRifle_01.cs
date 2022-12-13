@@ -12,21 +12,28 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
     [SerializeField] GameObject rifleBoltSlider;
     [SerializeField] GameObject bulletSpawnPoint;
     [SerializeField] GameObject bulletContainer;
+
+
+
     [SerializeField] float lerpSpeed = 15;
-    [SerializeField] public int reloadStep = -1;
+    [SerializeField] int reloadStep = -1;
+    [SerializeField] bool isCocked = false;
+    float reloadLerpTime = 0;
+
     [SerializeField] IKController iKController;
     [SerializeField] List<Transform> reload_targets;
     [SerializeField] GameObject magazineClip;
     [SerializeField] Inventory inventory;
 
 
-    [SerializeField] GameObject slot;
-    [SerializeField] GameObject bagPack;
+    // [SerializeField] GameObject slot;
+    // [SerializeField] GameObject bagPack;
 
-    float timer;
-    float start;
+    // float timer;
+    // float start;
 
-    float lerpTime = 0;
+
+
 
     private void Awake() => rb = GetComponent<Rigidbody>();
 
@@ -47,6 +54,16 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 
         if (!isEquipped) return;
 
+        // if (!isCocked)
+        // {
+        //     if (iKController.rightHandIK && iKController.leftHandIK)
+        //     {
+        //         // if (isReloading || isShooting || !isEquipped || (numberOfClips == 0)) return;
+        //         isReloading = true;
+        //         reloadStep = 5;
+        //     }
+        // }
+
         if (Input.GetMouseButton(0)) if (bulletsLeft > 0 && isEquipped) Shoot();
         Recoil();
 
@@ -59,13 +76,6 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
         }
 
         Reload();
-
-
-
-
-
-
-
     }
 
     public void Shoot() => isShooting = true;
@@ -116,10 +126,10 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 
         bool nextStep(GameObject hand, Transform pose)
         {
-            lerpTime = Mathf.Clamp01((lerpTime + (Time.deltaTime * weapon.ReloadSpeed)));
-            hand.transform.position = Vector3.Slerp(hand.transform.position, pose.position, lerpTime / 5);
-            hand.transform.rotation = Quaternion.Slerp(hand.transform.rotation, pose.transform.rotation, lerpTime / 5);
-            return lerpTime == 1 ? true : false;
+            reloadLerpTime = Mathf.Clamp01((reloadLerpTime + (Time.deltaTime * weapon.ReloadSpeed)));
+            hand.transform.position = Vector3.Slerp(hand.transform.position, pose.position, reloadLerpTime / 5);
+            hand.transform.rotation = Quaternion.Slerp(hand.transform.rotation, pose.transform.rotation, reloadLerpTime / 5);
+            return reloadLerpTime == 1 ? true : false;
         }
 
         if (isReloading)
@@ -127,18 +137,18 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
             switch (reloadStep)
             {
                 case 0: //hand on mag
-                    if (nextStep(iKController.leftHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
                     {
-                        magazineClip.transform.SetParent(iKController.leftHandIK.transform);
+                        magazineClip.transform.SetParent(iKController.leftHandIK_target.transform);
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
                 case 1: //throw old mag
                         //--------------------------------------------------------------------------------------------------------------------------------------------- ?????????? code not good! 
                     for (int i = 0; i < iKController.fingerBones_left.Count - 1; i++)
                     {
-                        iKController.fingerBones_left[i].weight = Mathf.Lerp(iKController.fingerBones_left[i].weight, 0, lerpTime / 5);
+                        iKController.fingerBones_left[i].weight = Mathf.Lerp(iKController.fingerBones_left[i].weight, 0, reloadLerpTime / 5);
                         if (iKController.fingerBones_left[i].weight < .1f)
                         {
                             magazineClip.transform.SetParent(null);
@@ -149,76 +159,76 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                     //--------------------------------------------------------------------------------------------------------------------------------------------- ?????????? code not good! 
 
 
-                    if (nextStep(iKController.leftHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
                     {
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
                 case 2: //get new mag
 
                     for (int i = 0; i < iKController.fingerBones_left.Count - 1; i++)
                     {
-                        iKController.fingerBones_left[i].weight = Mathf.Lerp(iKController.fingerBones_left[i].weight, 1, lerpTime / 5);
+                        iKController.fingerBones_left[i].weight = Mathf.Lerp(iKController.fingerBones_left[i].weight, 1, reloadLerpTime / 5);
                     }
 
-                    if (nextStep(iKController.leftHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
                     {
-                        magazineClip = Instantiate(weapon.MagazinePrefab, new Vector3(), Quaternion.identity, iKController.leftHandIK.transform);
+                        magazineClip = Instantiate(weapon.MagazinePrefab, new Vector3(), Quaternion.identity, iKController.leftHandIK_target.transform);
                         magazineClip.transform.localPosition = weapon.MagazineLocalSpawnPosition;
                         magazineClip.transform.localRotation = Quaternion.Euler(weapon.MagazineLocalSpawnRotation);
                         magazineClip.transform.localScale = weapon.MagazineLocalSpawnScale;
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
                 case 3: //clip in new mag
-                    if (nextStep(iKController.leftHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
                     {
                         magazineClip.transform.SetParent(transform);
                         // oldClip.GetComponent<Rigidbody>().isKinematic = true;
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
                 case 4: // hand left on grip
-                    if (nextStep(iKController.leftHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
                     {
                         if (isClipEmpty) reloadStep++;
                         else reloadStep = -1;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
 
                     };
                     break;
                 case 5: // right hand on bolt lever
-                    if (nextStep(iKController.rightHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.rightHandIK_target, reload_targets[reloadStep]))
                     {
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
 
                 case 6: // right hand on bolt lever pull back
 
                     // rifleBoltSlider.transform.localPosition = new Vector3(rifleBoltSlider.transform.localPosition.x, rifleBoltSlider.transform.localPosition.y, rifleBoltSlider.transform.localPosition.z - .0002f);
-                    rifleBoltSlider.transform.parent = iKController.rightHandIK.transform;
-                    if (nextStep(iKController.rightHandIK, reload_targets[reloadStep]))
+                    rifleBoltSlider.transform.parent = iKController.rightHandIK_target.transform;
+                    if (nextStep(iKController.rightHandIK_target, reload_targets[reloadStep]))
                     {
                         rifleBoltSlider.transform.parent = transform;
                         rifleBoltSlider.transform.localPosition = new Vector3();
                         rifleBoltSlider.transform.localRotation = Quaternion.identity;
 
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
 
                 case 7: // hand right on grip
 
-                    if (nextStep(iKController.rightHandIK, reload_targets[reloadStep]))
+                    if (nextStep(iKController.rightHandIK_target, reload_targets[reloadStep]))
                     {
                         reloadStep++;
-                        lerpTime = 0;
+                        reloadLerpTime = 0;
                     };
                     break;
 
@@ -231,6 +241,8 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
             }
         }
     }
+
+
 
 
 }

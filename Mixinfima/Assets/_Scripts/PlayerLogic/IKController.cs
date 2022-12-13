@@ -25,8 +25,8 @@ public class IKController : MonoBehaviour
     [SerializeField] float aimLerpSpeed;
     [SerializeField] float sprintLerpSpeed;
     public int idle_layer = 0, aim_layer = 1, sprint_layer = 2, holster_layer = 3;
-    public GameObject leftHandIK;
-    public GameObject rightHandIK;
+    public GameObject leftHandIK_target;
+    public GameObject rightHandIK_target;
     public List<TwoBoneIKConstraint> fingerBones_left;
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] PlayerController playerController;
@@ -99,7 +99,6 @@ public class IKController : MonoBehaviour
             return false;
         }
 
-        // if (inventory.GetEquipped().isEquipped && HolsterTransition()) isArmedLeft = isArmedRight = true;
         if (inventory.GetEquipped().isEquipped)
         {
             if (HolsterTransition())

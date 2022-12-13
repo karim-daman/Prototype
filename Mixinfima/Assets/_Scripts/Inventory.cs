@@ -9,15 +9,14 @@ public class Inventory : MonoBehaviour
     public int equippedIndex = 0;
     private WeaponBase equipped_weapon;
 
-    [SerializeField] GameObject weaponCam;
-    [SerializeField] float minPickupDistance;
+    // [SerializeField] GameObject weaponCam;
+    // [SerializeField] float minPickupDistance;
     public GameObject slot;
 
-    WeaponBase pickableWeapon;
-    public Vector3 startPickUpPos;
-    public Vector3 startPickUpRot;
-    public bool startPickUp;
-    float pickUpTimer;
+    // WeaponBase pickableWeapon;
+
+
+    // float pickUpTimer;
 
 
     void Update()

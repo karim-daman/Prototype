@@ -12,6 +12,9 @@ public abstract class WeaponBase : MonoBehaviour
 
 
 
+    public GameObject weaponGripRight, weaponGripLeft;
+
+
 
 
 
