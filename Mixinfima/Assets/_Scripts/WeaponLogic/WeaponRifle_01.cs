@@ -49,7 +49,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
     {
 
         // Debug.DrawRay(bulletSpawnPoint.transform.position, transform.forward * 10, Color.red, 1);
-        Debug.DrawRay(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.TransformDirection(Vector3.forward) * 10, Color.red);
+        Debug.DrawRay(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.TransformDirection(Vector3.forward) * 100, Color.red);
 
 
         if (!isEquipped) return;

@@ -14,21 +14,15 @@ public class CamOverride : MonoBehaviour
     [SerializeField] LayerMask target_layer;
 
     WeaponBase pickableWeapon;
-    float pickUpTimer, grabTimer;
+    [SerializeField][Range(0, 1)] float pickUpTimer, grabTimer;
 
     // [SerializeField] GameObject crosshairTarget;
     Ray ray;
     RaycastHit hitInfo;
     [SerializeField] AnimationController animationController;
 
-    bool startWeaponGrab, startWeaponPickup;
+    [SerializeField] bool startWeaponGrab, startWeaponPickup;
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         // ray.origin = transform.position;
@@ -39,16 +33,12 @@ public class CamOverride : MonoBehaviour
         ScanAndPickUp();
         // transform.position = Vector3.Lerp(transform.position, pivotCam.transform.position, Time.deltaTime * 30);
 
-
         // Vector3 PlayerPos = Vector3.Lerp(oldPos, newPos, springCurve.Evaluate(lerp));
         // or
         // Vector3 PlayerPos = Vector3.LerpUnclamped(oldPos, newPos, springCurve.Evaluate(lerp));
 
-
         // if (!animationController.isSprinting) transform.position = Vector3.Lerp(transform.position, weaponCam.transform.position, Time.deltaTime * 15);
         if (!animationController.isSprinting) transform.position = weaponCam.transform.position;
-
-
 
     }
 
@@ -75,21 +65,22 @@ public class CamOverride : MonoBehaviour
         {
             if (GrabWeapon())
             {
-                Debug.Log("weapon grabbed");
-                startWeaponGrab = false;
                 grabTimer = 0;
                 startWeaponPickup = true;
+                startWeaponGrab = false;
             }
 
             bool GrabWeapon()
             {
-                if (grabTimer > 1.0f) return true;
+                if (grabTimer == 1.0f) return true;
                 grabTimer += Time.deltaTime;
+                grabTimer = Mathf.Clamp01(grabTimer);
 
-                iKController.rightHandIK_target.transform.position = Vector3.Lerp(iKController.rightHandIK_target.transform.position, pickableWeapon.weaponGripRight.transform.position, grabTimer);
-                iKController.rightHandIK_target.transform.rotation = Quaternion.Lerp(iKController.rightHandIK_target.transform.rotation, pickableWeapon.weaponGripRight.transform.rotation, grabTimer);
-                iKController.leftHandIK_target.transform.position = Vector3.Lerp(iKController.leftHandIK_target.transform.position, pickableWeapon.weaponGripLeft.transform.position, grabTimer);
-                iKController.leftHandIK_target.transform.rotation = Quaternion.Lerp(iKController.leftHandIK_target.transform.rotation, pickableWeapon.weaponGripLeft.transform.rotation, grabTimer);
+                iKController.rightHandIK_target.transform.position = Vector3.Lerp(iKController.rightHandIK_target.transform.position, pickableWeapon.weaponGripRight.transform.position, grabTimer * .1f);
+                iKController.leftHandIK_target.transform.position = Vector3.Lerp(iKController.leftHandIK_target.transform.position, pickableWeapon.weaponGripLeft.transform.position, grabTimer * .1f);
+                iKController.rightHandIK_target.transform.rotation = Quaternion.Lerp(iKController.rightHandIK_target.transform.rotation, pickableWeapon.weaponGripRight.transform.rotation, grabTimer * .1f);
+                iKController.leftHandIK_target.transform.rotation = Quaternion.Lerp(iKController.leftHandIK_target.transform.rotation, pickableWeapon.weaponGripLeft.transform.rotation, grabTimer * .1f);
+
                 return false;
             }
         }
@@ -99,34 +90,33 @@ public class CamOverride : MonoBehaviour
         {
             if (Pickup())
             {
-                Debug.Log("weapon picked");
-                startWeaponPickup = false;
                 pickUpTimer = 0;
+                startWeaponPickup = false;
             }
             bool Pickup()
             {
-                if (pickUpTimer > 1.0f) return true;
+                if (pickUpTimer == 1.0f) return true;
                 pickUpTimer += Time.deltaTime;
+                pickUpTimer = Mathf.Clamp01(pickUpTimer);
 
-                pickableWeapon.transform.localPosition = Vector3.Lerp(pickableWeapon.transform.localPosition, new Vector3(), pickUpTimer);
-                pickableWeapon.transform.rotation = Quaternion.Lerp(pickableWeapon.transform.rotation, new Quaternion(), pickUpTimer);
+                pickableWeapon.transform.localPosition = Vector3.Lerp(pickableWeapon.transform.localPosition, new Vector3(), pickUpTimer * .1f);
+                pickableWeapon.transform.localRotation = Helpers.Lerp(pickableWeapon.transform.localRotation, Quaternion.identity, pickUpTimer * .1f, true);
 
                 iKController.rightHandIK_target.transform.position = Vector3.Lerp(iKController.rightHandIK_target.transform.position, pickableWeapon.weaponGripRight.transform.position, pickUpTimer);
-                iKController.rightHandIK_target.transform.rotation = Quaternion.Lerp(iKController.rightHandIK_target.transform.rotation, pickableWeapon.weaponGripRight.transform.rotation, pickUpTimer);
                 iKController.leftHandIK_target.transform.position = Vector3.Lerp(iKController.leftHandIK_target.transform.position, pickableWeapon.weaponGripLeft.transform.position, pickUpTimer);
+                iKController.rightHandIK_target.transform.rotation = Quaternion.Lerp(iKController.rightHandIK_target.transform.rotation, pickableWeapon.weaponGripRight.transform.rotation, pickUpTimer);
                 iKController.leftHandIK_target.transform.rotation = Quaternion.Lerp(iKController.leftHandIK_target.transform.rotation, pickableWeapon.weaponGripLeft.transform.rotation, pickUpTimer);
-
 
                 return false;
             }
         }
-
 
     }
 
     void WeaponPickup(RaycastHit hit)
     {
         pickableWeapon = hit.transform.gameObject.GetComponent<WeaponBase>();
+        iKController.weaponPrefab = pickableWeapon;
         Destroy(pickableWeapon.transform.gameObject.GetComponent<Rigidbody>());
         pickableWeapon.isAvailable = false;
         inventory.AddWeapon(pickableWeapon);

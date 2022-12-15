@@ -28,6 +28,7 @@ public class Inventory : MonoBehaviour
     public void AddWeapon(WeaponBase pickableItem)
     {
         pickableItem.isAvailable = false;
+        pickableItem.isHolstered = true;
         pickableItem.isEquipped = true;
         weapons.Add(pickableItem);
         equippedIndex++;
@@ -37,11 +38,12 @@ public class Inventory : MonoBehaviour
     {
         GetEquipped().isAvailable = true;
         GetEquipped().isEquipped = false;
+        GetEquipped().isHolstered = false;
         GetEquipped().transform.SetParent(null);
         GetEquipped().rb = GetEquipped().transform.gameObject.AddComponent<Rigidbody>();
-        GetEquipped().GetComponent<Rigidbody>().isKinematic = false;
-        GetEquipped().GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
-        GetEquipped().GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+        GetEquipped().rb.isKinematic = false;
+        GetEquipped().rb.interpolation = RigidbodyInterpolation.Interpolate;
+        GetEquipped().rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         RemoveWeapon(GetEquippedIndex());
     }
 

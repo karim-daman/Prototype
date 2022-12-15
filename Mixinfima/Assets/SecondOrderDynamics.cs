@@ -8,6 +8,11 @@ public class SecondOrderDynamics : MonoBehaviour
     [SerializeField] float frequency = 1, damp = .5f, response = 2;
     SecondOrderClass motion;
 
+    [SerializeField] Vector3 offset;
+
+
+    public Vector3 resting;
+
     private void Awake()
     {
         motion = new SecondOrderClass(frequency, damp, response, transform.position);
@@ -15,14 +20,19 @@ public class SecondOrderDynamics : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.W)) transform.position += new Vector3(0, 0, 1);
-        if (Input.GetKey(KeyCode.S)) transform.position += new Vector3(0, 0, -1);
-        if (Input.GetKey(KeyCode.A)) transform.position += new Vector3(-1, 0, 0);
-        if (Input.GetKey(KeyCode.D)) transform.position += new Vector3(1, 0, 0);
-        if (Input.GetKey(KeyCode.Space)) transform.position += new Vector3(0, 1, 0);
-        if (Input.GetKey(KeyCode.LeftControl)) transform.position += new Vector3(0, -1, 0);
+        // if (Input.GetKey(KeyCode.W)) transform.position += new Vector3(0, 0, 1);
+        // if (Input.GetKey(KeyCode.S)) transform.position += new Vector3(0, 0, -1);
+        // if (Input.GetKey(KeyCode.A)) transform.position += new Vector3(-1, 0, 0);
+        // if (Input.GetKey(KeyCode.D)) transform.position += new Vector3(1, 0, 0);
+        // if (Input.GetKey(KeyCode.Space)) transform.position += new Vector3(0, 1, 0);
+        // if (Input.GetKey(KeyCode.LeftControl)) transform.position += new Vector3(0, -1, 0);
 
-        follower.transform.position = motion.Update(Time.deltaTime, transform.position, new Vector3());
+        follower.transform.position = motion.Update(Time.deltaTime, transform.position, new Vector3()) + offset;
+
+
+        // transform.position = Vector3.Lerp(transform.position, resting, Time.deltaTime * 10);
+
+
     }
 
 }

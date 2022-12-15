@@ -7,6 +7,14 @@ using RootMotion.FinalIK;
 
 public class IKController : MonoBehaviour
 {
+
+    [SerializeField] float armingMultiplier;
+    // public float ArmRightLerpTimer { get; private set; }
+    // public float ArmLeftLerpTimer { get; private set; }
+
+    [SerializeField][Range(0, 1)] float ArmRightLerpTimer;
+    [SerializeField][Range(0, 1)] float ArmLeftLerpTimer;
+
     [SerializeField] bool enableIK;
     [SerializeField] Inventory inventory;
     [SerializeField] float lerpSpeed = 15;
@@ -28,7 +36,7 @@ public class IKController : MonoBehaviour
     public GameObject leftHandIK_target;
     public GameObject rightHandIK_target;
     public List<TwoBoneIKConstraint> fingerBones_left;
-    [SerializeField] GameObject weaponPrefab;
+    public WeaponBase weaponPrefab;
     [SerializeField] PlayerController playerController;
     public State currentState;
     MultiPositionConstraint idle_pos_constraint;
@@ -116,22 +124,41 @@ public class IKController : MonoBehaviour
                 weaponPrefab.transform.localEulerAngles = new Vector3();
             }
         }
-
-        ArmRight(isArmedRight);
-        ArmLeft(isArmedLeft);
-
-        void ArmRight(bool state)
-        {
-            fbbik.solver.rightArmMapping.weight = Mathf.Lerp(fbbik.solver.rightArmMapping.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
-            rightHandRig.weight = Mathf.Lerp(rightHandRig.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
-        }
-
-        void ArmLeft(bool state)
-        {
-            fbbik.solver.leftArmMapping.weight = Mathf.Lerp(fbbik.solver.leftArmMapping.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
-            leftHandRig.weight = Mathf.Lerp(leftHandRig.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
-        }
         #endregion
+
+        if (ArmRight(isArmedRight)) Debug.Log("");
+        else Debug.Log("running...");
+        if (ArmLeft(isArmedLeft)) Debug.Log("");
+        else Debug.Log("running...");
+
+
+        bool ArmRight(bool state)
+        {
+            float goal = state ? 1 : 0;
+            if (rightHandRig.weight == goal) return true;
+            if (state) ArmRightLerpTimer += Time.deltaTime;
+            else ArmRightLerpTimer -= Time.deltaTime;
+
+            ArmRightLerpTimer = Mathf.Clamp01(ArmRightLerpTimer);
+            fbbik.solver.rightArmMapping.weight = Mathf.Lerp(fbbik.solver.rightArmMapping.weight, goal, ArmRightLerpTimer);
+            rightHandRig.weight = Mathf.Lerp(rightHandRig.weight, goal, ArmRightLerpTimer);
+            return false;
+        }
+
+        bool ArmLeft(bool state)
+        {
+            float goal = state ? 1 : 0;
+            if (leftHandRig.weight == goal) return true;
+            if (state) ArmLeftLerpTimer += Time.deltaTime;
+            else ArmLeftLerpTimer -= Time.deltaTime;
+
+            ArmLeftLerpTimer = Mathf.Clamp01(ArmLeftLerpTimer);
+            fbbik.solver.leftArmMapping.weight = Mathf.Lerp(fbbik.solver.leftArmMapping.weight, goal, ArmLeftLerpTimer);
+            leftHandRig.weight = Mathf.Lerp(leftHandRig.weight, goal, ArmLeftLerpTimer);
+            return false;
+        }
+        //-------------------------testing
+
 
         #region constraints
 
@@ -145,8 +172,6 @@ public class IKController : MonoBehaviour
         rig_list[sprint_layer].weight = sprint_flerp_elapsed;
 
         #endregion
-
-
 
         #region Posing
         if (!animationController.isCrouching && !animationController.isAiming) currentState = State.Stand_Idle;
@@ -213,3 +238,47 @@ public class IKController : MonoBehaviour
     }
 
 }
+
+
+// void ArmRight(bool state)
+// {
+//     fbbik.solver.rightArmMapping.weight = Mathf.Lerp(fbbik.solver.rightArmMapping.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
+//     rightHandRig.weight = Mathf.Lerp(rightHandRig.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
+// }
+
+// void ArmLeft(bool state)
+// {
+//     fbbik.solver.leftArmMapping.weight = Mathf.Lerp(fbbik.solver.leftArmMapping.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
+//     leftHandRig.weight = Mathf.Lerp(leftHandRig.weight, state ? 1 : 0, Time.deltaTime * lerpSpeed);
+// }
+//------------------------------------------------------------------------------------ testing
+// void ArmRight(bool state)
+// {
+//     if (armedRight()) { Debug.Log("armed Right"); return; }
+//     else ArmRightLerpTimer = 0;
+//     bool armedRight()
+//     {
+//         Debug.Log("arming Right");
+//         if (ArmRightLerpTimer > 1.0f) return true;
+//         ArmRightLerpTimer += Time.deltaTime * armingMultiplier;
+//         fbbik.solver.rightArmMapping.weight = Mathf.Lerp(fbbik.solver.rightArmMapping.weight, state ? 1 : 0, ArmRightLerpTimer);
+//         rightHandRig.weight = Mathf.Lerp(rightHandRig.weight, state ? 1 : 0, ArmRightLerpTimer);
+//         return false;
+//     }
+// }
+
+// void ArmLeft(bool state)
+// {
+//     if (armedLeft()) { Debug.Log("armed Left"); return; }
+//     else ArmLeftLerpTimer = 0;
+//     bool armedLeft()
+//     {
+//         Debug.Log("arming Left");
+//         if (ArmLeftLerpTimer > 1.0f) return true;
+//         ArmLeftLerpTimer += Time.deltaTime * armingMultiplier;
+//         fbbik.solver.leftArmMapping.weight = Mathf.Lerp(fbbik.solver.leftArmMapping.weight, state ? 1 : 0, ArmLeftLerpTimer);
+//         leftHandRig.weight = Mathf.Lerp(leftHandRig.weight, state ? 1 : 0, ArmLeftLerpTimer);
+//         return false;
+//     }
+// }
+//------------------------------------------------------------------------------------ testing

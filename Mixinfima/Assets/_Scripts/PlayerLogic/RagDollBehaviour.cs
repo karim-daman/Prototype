@@ -13,7 +13,6 @@ public class RagDollBehaviour : MonoBehaviour
     [SerializeField] FullBodyBipedIK fullBodyBipedIK;
     [SerializeField] CharacterController characterController;
     [SerializeField] PlayerController playerController;
-
     [SerializeField] List<GameObject> ragdollObjects;
 
 
