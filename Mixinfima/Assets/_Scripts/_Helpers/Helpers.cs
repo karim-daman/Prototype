@@ -6,16 +6,16 @@ public static class Helpers
 {
 
     public static Vector3 v3Lerp(Vector3 start, Vector3 goal, float timer) => Vector3.Lerp(start, goal, timer);
-    public static Quaternion qLerp(Quaternion start, Quaternion goal, float timer) => Quaternion.Lerp(start, goal, timer);
+    // public static Quaternion qLerp(Quaternion start, Quaternion goal, float timer) => Quaternion.Lerp(start, goal, timer);
     public static float fLerp(float start, float goal, float timer) => Mathf.Lerp(start, goal, timer);
 
-    public static Quaternion Lerp(Quaternion p, Quaternion q, float t, bool shortWay)
+    public static Quaternion qLerp(Quaternion p, Quaternion q, float t, bool shortWay)
     {
         if (shortWay)
         {
             float dot = Quaternion.Dot(p, q);
             if (dot < 0.0f)
-                return Lerp(ScalarMultiply(p, -1.0f), q, t, true);
+                return qLerp(ScalarMultiply(p, -1.0f), q, t, true);
         }
 
         Quaternion r = Quaternion.identity;
