@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f3a114353f7474697a3807dc624427, type: 3}
+  m_Name: cam_Unarmed
+  m_EditorClassIdentifier: 
+  Stand_Idle_up: {x: -0.03, y: 0.18, z: -0.07}
+  Stand_Idle_forward: {x: -0.06, y: 0.35, z: 0.15}
+  Stand_Idle_down: {x: 0, y: -0.06, z: 0.3}
+  Stand_Aim_up: {x: -0.11, y: 0.05, z: -0.02}
+  Stand_Aim_forward: {x: -0.05, y: 0.42, z: 0.13}
+  Stand_Aim_down: {x: -0.06, y: -0.09, z: 0.27}
+  Crouch_Idle_up: {x: -0.05, y: 0.12, z: 0}
+  Crouch_Idle_forward: {x: -0.05, y: 0.42, z: 0.12}
+  Crouch_Idle_down: {x: -0.05, y: -0.1, z: 0.18}
+  Crouch_Aim_up: {x: -0.09, y: 0.11, z: -0.05}
+  Crouch_Aim_forward: {x: -0.07, y: 0.4, z: 0.13}
+  Crouch_Aim_down: {x: -0.05, y: -0.1, z: 0.23}

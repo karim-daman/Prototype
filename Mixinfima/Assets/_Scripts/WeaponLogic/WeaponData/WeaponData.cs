@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Weapon Pose", menuName = "Create WeaponPose Data", order = 1)]
+[CreateAssetMenu(fileName = "Weapon", menuName = "Create Weapon Data", order = 1)]
 public class WeaponData : ScriptableObject
 {
 
@@ -27,6 +27,8 @@ public class WeaponData : ScriptableObject
     public AnimationCurve ZkickBack, XrotationRecoil, boltSliderCurve;
     public float FireRate;
 
+
+    public CamData camData;
 
 
 

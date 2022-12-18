@@ -140,6 +140,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   FireRate: 0.12
+  camData: {fileID: 11400000, guid: de09d7a257ba4874fb67a8b4ce3e178a, type: 2}
   Stand_Idle_up: {x: -0.03, y: -0.02, z: -0.07}
   Stand_Idle_forward: {x: -0.06, y: 0.35, z: 0.15}
   Stand_Idle_down: {x: 0, y: -0.06, z: 0.3}
