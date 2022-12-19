@@ -68,6 +68,10 @@ public class CamOverride : MonoBehaviour
 
         iKController.isBusyPickingUp = true;
         pickableWeapon = hit.transform.gameObject.GetComponent<WeaponBase>();
+        pickableWeapon.iKController = iKController;
+        pickableWeapon.inventory = inventory;
+        pickableWeapon.slot = inventory.slot;
+
         iKController.weaponPrefab = pickableWeapon;
         Destroy(pickableWeapon.transform.gameObject.GetComponent<Rigidbody>());
         pickableWeapon.isAvailable = false;

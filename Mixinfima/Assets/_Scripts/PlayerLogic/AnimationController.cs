@@ -6,29 +6,30 @@ using RootMotion.FinalIK;
 
 public class AnimationController : MonoBehaviour
 {
-    private void Awake() => _animator = GetComponent<Animator>();
 
 
-    public Animator _animator;
+    Animator _animator;
     float crouchingInput;
     [HideInInspector] public int speedMultiplier = 2;
     [SerializeField] float lerpSpeed = 10;
     [HideInInspector] public bool isStanding, isCrouching, isAiming, isSprinting, isMovingX, isMovingY, isAirborn;
-    [SerializeField] CharacterController controller;
-
+    CharacterController controller;
     float currentMouseX;
     [SerializeField] bool enableSideStepping;
 
 
 
 
-
-
     public bool forceAim = false, forceSprint = false;
 
-    float layerWeightLerpValue = 0;
+    // float layerWeightLerpValue = 0;
 
 
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        controller = GetComponentInParent<CharacterController>();
+    }
 
 
 

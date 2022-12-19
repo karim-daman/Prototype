@@ -38,7 +38,7 @@ public class IKController : MonoBehaviour
 
     MultiPositionConstraint unarmed_pos_constraint;
     MultiPositionConstraint idle_pos_constraint;
-    MultiPositionConstraint aim_pos_constraint;
+    [SerializeField] MultiPositionConstraint aim_pos_constraint;
 
     FullBodyBipedIK fbbik;
     PlayerController playerController;
@@ -67,6 +67,8 @@ public class IKController : MonoBehaviour
         playerController = GetComponentInParent<PlayerController>();
         animationController = GetComponent<AnimationController>();
         fbbik = GetComponent<FullBodyBipedIK>();
+
+
 
         unarmed_pos_constraint = constraints_list[unarmed_layer].GetComponent<MultiPositionConstraint>();
         idle_pos_constraint = constraints_list[idle_layer].GetComponent<MultiPositionConstraint>();

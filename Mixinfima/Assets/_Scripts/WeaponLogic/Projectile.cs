@@ -33,21 +33,5 @@ public class Projectile : MonoBehaviour
         // rb.velocity += shootDirection * bulletVelocity;
         Destroy(gameObject, lifeSpan);
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Target")
-        {
-            // Destroy(gameObject);
-            other.GetComponent<Target>().TakeDamage();
-
-
-
-        }
-    }
-
-
-
-
-
 
 }

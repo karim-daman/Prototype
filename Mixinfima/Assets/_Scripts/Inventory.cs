@@ -12,11 +12,15 @@ public class Inventory : MonoBehaviour
     // [SerializeField] GameObject weaponCam;
     // [SerializeField] float minPickupDistance;
     public GameObject slot;
+    public ParticleSystem shellParticles;
 
     // WeaponBase pickableWeapon;
 
 
     // float pickUpTimer;
+
+    public List<Transform> reload_targets;
+
 
 
     void Update()

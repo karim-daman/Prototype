@@ -16,7 +16,7 @@ public class CapsuleController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] bool enableTilt;
-    [SerializeField] float jumpHeight = 10;
+    // [SerializeField] float jumpHeight = 10;
     [SerializeField] float minimumSpeed = 10, MaximumSpeed = 20;
     [SerializeField] ForceMode forceMode = ForceMode.Force;
     [SerializeField] float sensitivity = 500;

@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMouseDelta = Vector2.zero;
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
 
-    [SerializeField][Range(.1f, 1)] float TimeScale;
+    [SerializeField][Range(.1f, 1)] float TimeScale = 1;
 
     public float gravityScale = 1;
     public float jumpHeight = 1;

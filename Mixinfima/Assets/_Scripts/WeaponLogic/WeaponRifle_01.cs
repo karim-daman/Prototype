@@ -6,37 +6,15 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 {
 
     public int numberOfClips = 5, bulletsLeft;
-
-    [SerializeField] ParticleSystem shellParticles;
-    [SerializeField] GameObject rifleSlot;
     [SerializeField] GameObject rifleBoltSlider;
     [SerializeField] GameObject bulletSpawnPoint;
     [SerializeField] GameObject bulletContainer;
-
-
-
     [SerializeField] float lerpSpeed = 15;
     [SerializeField] int reloadStep = -1;
     [SerializeField] bool isCocked = false;
-    float reloadLerpTime = 0;
-
-    [SerializeField] IKController iKController;
-    [SerializeField] List<Transform> reload_targets;
     [SerializeField] GameObject magazineClip;
-    [SerializeField] Inventory inventory;
-
-
-    // [SerializeField] GameObject slot;
-    // [SerializeField] GameObject bagPack;
-
-    // float timer;
-    // float start;
-
-
-
-
+    float reloadLerpTime = 0;
     private void Awake() => rb = GetComponent<Rigidbody>();
-
 
     private void Start()
     {
@@ -89,24 +67,24 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
             if (recoil_elapsed_time >= weapon.FireRate * .45f && !hasEjectedShell)
             {
                 hasEjectedShell = true;
-                shellParticles.Emit(1);
+                inventory.shellParticles.Emit(1);
             }
 
             if (recoil_elapsed_time >= weapon.FireRate) isShooting = hasEjectedShell = hasFired = false;
 
             float lerpRatio = recoil_elapsed_time / weapon.FireRate;
             rifleBoltSlider.transform.localPosition = Vector3.LerpUnclamped(rifleBoltSlider.transform.localPosition, new Vector3(rifleBoltSlider.transform.localPosition.x, rifleBoltSlider.transform.localPosition.y, EvaluateCurve(weapon.boltSliderCurve, lerpRatio)), Time.deltaTime * 100);
-            rifleSlot.transform.localPosition = Vector3.LerpUnclamped(rifleSlot.transform.localPosition, new Vector3(rifleSlot.transform.localPosition.x, rifleSlot.transform.localPosition.y, EvaluateCurve(weapon.ZkickBack, lerpRatio)), Time.deltaTime * lerpSpeed);
+            inventory.slot.transform.localPosition = Vector3.LerpUnclamped(inventory.slot.transform.localPosition, new Vector3(inventory.slot.transform.localPosition.x, inventory.slot.transform.localPosition.y, EvaluateCurve(weapon.ZkickBack, lerpRatio)), Time.deltaTime * lerpSpeed);
             // rifleSlot.transform.localRotation = Quaternion.Slerp(
             //         rifleSlot.transform.localRotation, Quaternion.Euler(EvaluateCurve(weapon.XrotationRecoil, lerpRatio),
             //         0,
             //         0), Time.deltaTime * lerpSpeed);
 
-            rifleSlot.transform.localRotation = Quaternion.Slerp(rifleSlot.transform.localRotation,
-                    Quaternion.Euler(EvaluateCurve(weapon.XrotationRecoil, lerpRatio) * Random.Range(-2, 2),
-                                     EvaluateCurve(weapon.XrotationRecoil, lerpRatio) * .5f,
-                                     EvaluateCurve(weapon.XrotationRecoil, lerpRatio) * Random.Range(-1, 1)
-                    ), Time.deltaTime * lerpSpeed);
+            inventory.slot.transform.localRotation = Quaternion.Slerp(inventory.slot.transform.localRotation,
+                     Quaternion.Euler(EvaluateCurve(weapon.XrotationRecoil, lerpRatio) * Random.Range(-2, 2),
+                                      EvaluateCurve(weapon.XrotationRecoil, lerpRatio) * .5f,
+                                      EvaluateCurve(weapon.XrotationRecoil, lerpRatio) * Random.Range(-1, 1)
+                     ), Time.deltaTime * lerpSpeed);
 
         }
         if (!isShooting && !isReloading) recoil_elapsed_time = 0;
@@ -134,10 +112,13 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 
         if (isReloading)
         {
+
+            Debug.Log(inventory.reload_targets);
+
             switch (reloadStep)
             {
                 case 0: //hand on mag
-                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         magazineClip.transform.SetParent(iKController.leftHandIK_target.transform);
                         reloadStep++;
@@ -159,7 +140,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                     //--------------------------------------------------------------------------------------------------------------------------------------------- ?????????? code not good! 
 
 
-                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         reloadStep++;
                         reloadLerpTime = 0;
@@ -172,7 +153,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                         iKController.fingerBones_left[i].weight = Mathf.Lerp(iKController.fingerBones_left[i].weight, 1, reloadLerpTime / 5);
                     }
 
-                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         magazineClip = Instantiate(weapon.MagazinePrefab, new Vector3(), Quaternion.identity, iKController.leftHandIK_target.transform);
                         magazineClip.transform.localPosition = weapon.MagazineLocalSpawnPosition;
@@ -183,7 +164,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                     };
                     break;
                 case 3: //clip in new mag
-                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         magazineClip.transform.SetParent(transform);
                         // oldClip.GetComponent<Rigidbody>().isKinematic = true;
@@ -192,7 +173,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                     };
                     break;
                 case 4: // hand left on grip
-                    if (nextStep(iKController.leftHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.leftHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         if (isClipEmpty) reloadStep++;
                         else reloadStep = -1;
@@ -201,7 +182,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
                     };
                     break;
                 case 5: // right hand on bolt lever
-                    if (nextStep(iKController.rightHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.rightHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         reloadStep++;
                         reloadLerpTime = 0;
@@ -212,7 +193,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 
                     // rifleBoltSlider.transform.localPosition = new Vector3(rifleBoltSlider.transform.localPosition.x, rifleBoltSlider.transform.localPosition.y, rifleBoltSlider.transform.localPosition.z - .0002f);
                     rifleBoltSlider.transform.parent = iKController.rightHandIK_target.transform;
-                    if (nextStep(iKController.rightHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.rightHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         rifleBoltSlider.transform.parent = transform;
                         rifleBoltSlider.transform.localPosition = new Vector3();
@@ -225,7 +206,7 @@ public class WeaponRifle_01 : WeaponBase, IWeapon
 
                 case 7: // hand right on grip
 
-                    if (nextStep(iKController.rightHandIK_target, reload_targets[reloadStep]))
+                    if (nextStep(iKController.rightHandIK_target, inventory.reload_targets[reloadStep]))
                     {
                         reloadStep++;
                         reloadLerpTime = 0;

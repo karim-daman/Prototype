@@ -11,23 +11,30 @@ public class RagDollBehaviour : MonoBehaviour
     [SerializeField] IKController iKController;
     [SerializeField] Animator animator;
     [SerializeField] FullBodyBipedIK fullBodyBipedIK;
-    [SerializeField] CharacterController characterController;
-    [SerializeField] PlayerController playerController;
+
     [SerializeField] List<GameObject> ragdollObjects;
 
-
-    public List<Rigidbody> ragdoll_bodies;
-    public List<Collider> ragdoll_Colliders;
+    CharacterController characterController;
+    PlayerController playerController;
+    [SerializeField] List<Rigidbody> ragdoll_bodies;
+    [SerializeField] List<Collider> ragdoll_Colliders;
     [SerializeField] Body body;
 
 
     private void Awake()
     {
+
+        playerController = GetComponent<PlayerController>();
+        characterController = GetComponent<CharacterController>();
+
         for (int i = 0; i < ragdollObjects.Count; i++)
         {
             ragdoll_bodies.Add(ragdollObjects[i].GetComponent<Rigidbody>());
             ragdoll_Colliders.Add(ragdollObjects[i].GetComponent<Collider>());
         }
+
+        for (int i = 0; i < ragdollObjects.Count; i++) ragdoll_Colliders[i].isTrigger = true;
+
     }
 
 
@@ -63,7 +70,5 @@ public class RagDollBehaviour : MonoBehaviour
         Die();
         Rigidbody hitRigidbody = ragdoll_bodies.OrderBy(rigidbody => Vector3.Distance(rigidbody.position, hitPoint)).First();
         hitRigidbody.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
-
-
     }
 }
