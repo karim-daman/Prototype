@@ -15,8 +15,7 @@ public abstract class WeaponBase : MonoBehaviour
     public bool isClipEmpty, isShooting, hasFired, hasEjectedShell, isReloading = false;
 
 
-
-
+    public WeaponAttachementManager activeAttachements;
 
 
 

@@ -145,7 +145,6 @@ public class IKController : MonoBehaviour
         {
             if (holster_timer > 1.0f) return true;
             holster_timer += Time.deltaTime * 2;
-            Debug.Log("layer:" + holster_layer);
             rig_list[holster_layer].weight = Mathf.Lerp(holster_start_weight, inventory.GetEquipped().isEquipped ? 0 : 1, holster_timer);
             return false;
         }

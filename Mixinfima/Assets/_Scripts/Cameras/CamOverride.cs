@@ -36,9 +36,6 @@ public class CamOverride : MonoBehaviour
         // or
         // Vector3 PlayerPos = Vector3.LerpUnclamped(oldPos, newPos, springCurve.Evaluate(lerp));
 
-
-
-
     }
 
     private void LateUpdate()

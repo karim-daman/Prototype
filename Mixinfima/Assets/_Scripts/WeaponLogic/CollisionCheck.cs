@@ -12,13 +12,11 @@ public class CollisionCheck : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-
         if (other.gameObject.tag == "Projectile")
         {
             Destroy(other.gameObject);
             Debug.Log(++body.hits);
         }
-
     }
 
 }

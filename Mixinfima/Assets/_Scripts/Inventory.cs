@@ -21,14 +21,6 @@ public class Inventory : MonoBehaviour
 
     public List<Transform> reload_targets;
 
-
-
-    void Update()
-    {
-    }
-
-
-
     public void AddWeapon(WeaponBase pickableItem)
     {
         pickableItem.isAvailable = false;
