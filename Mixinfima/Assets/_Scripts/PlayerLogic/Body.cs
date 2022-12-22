@@ -10,7 +10,6 @@ public class Body : MonoBehaviour
     private void Update()
     {
         // Debug.Log(hits);
-
     }
 
 }

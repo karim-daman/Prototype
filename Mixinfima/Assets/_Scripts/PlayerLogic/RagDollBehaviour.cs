@@ -33,15 +33,19 @@ public class RagDollBehaviour : MonoBehaviour
             ragdoll_Colliders.Add(ragdollObjects[i].GetComponent<Collider>());
         }
 
-        for (int i = 0; i < ragdollObjects.Count; i++) ragdoll_Colliders[i].isTrigger = true;
+        foreach (Rigidbody body in ragdoll_bodies)
+        {
+            body.mass = 20;
+            body.interpolation = RigidbodyInterpolation.Interpolate;
+            body.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
 
     }
-
 
     void Update()
     {
         if (body.hits > 3) Die();
-        // if (Input.GetKey(KeyCode.K)) Die();
+        if (Input.GetKey(KeyCode.K)) Die();
     }
     void Die()
     {
